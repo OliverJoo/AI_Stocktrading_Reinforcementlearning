@@ -1,4 +1,4 @@
-# AI Stock Trading with Reinforcement Learning 
+# AI Stock Trading with Reinforcement Learning + MySQL 
 
  * Package structure
    * ├── Crawl

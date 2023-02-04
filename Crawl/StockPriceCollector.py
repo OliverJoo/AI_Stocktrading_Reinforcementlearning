@@ -17,9 +17,9 @@ DB_SECRET = _cfg['DB_SECRET']
 
 def insert_market_stock_ohlcvc(start_date, end_date):
     """
-
-    :param start_date:
-    :param end_date:
+    stock price info(OHLCVC) insert to DB
+    :param start_date:str
+    :param end_date:str
     :return:
     """
     markets = ['KOSPI', 'KOSDAQ']
@@ -130,7 +130,6 @@ def volatility_stock_list(volatility: int):
 def get_kospi_kosdaq_index(index_name: str, start_date: str, end_date: str) -> pd.DataFrame:
     """
     get OSPI / KOSDAQ index info
-
     :param index_name: KOSPI or KOSDAQ
     :param start_date: index info start date
     :param end_date: index info end date

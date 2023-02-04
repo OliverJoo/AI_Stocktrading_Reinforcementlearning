@@ -1,10 +1,8 @@
-# 데이터 처리 모듈
 import pandas as pd
 from tqdm import tqdm
 import datetime
 import yaml
 import sqlalchemy
-
 import snscrape.modules.twitter as sntwitter
 from multiprocessing import Pool
 
@@ -34,7 +32,7 @@ def mainProcess():
 
 def multiProcess(array_list):
     try:
-        # set search term
+        # get parameters
         process_name = array_list[0]
         start_date = array_list[1]
         end_date = array_list[2]

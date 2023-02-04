@@ -14,7 +14,7 @@ from newsSpider.items import NewsspiderItem  # 만약 NewsspiderItem 못찾을 �
 
 pymysql.install_as_MySQLdb()
 
-# DB 접속 정보
+# DB connection info
 with open(f'..\config.yaml', encoding='UTF-8') as f:
     _cfg = yaml.load(f, Loader=yaml.FullLoader)
 
@@ -176,7 +176,7 @@ class NewsspiderSpider(scrapy.Spider):
                                     if content == '':
                                         content = ''.join(response.css('.con_article::text').getall())
         try:
-            scrawl_info['content'] = content.replace('\n', '').replace('헤럴드경제=', '').strip()
+            scrawl_info['content'] = content.replace('\n', '').strip()
         except Exception as e:
             print(e)
             scrawl_info['content'] = content
@@ -206,7 +206,7 @@ class NewsspiderSpider(scrapy.Spider):
                                             if published_date is None:
                                                 published_date = response.css('ul.infomation li::text')[2].get()
         try:
-            scrawl_info['published_date'] = published_date.replace("입력", "").replace(":", "").replace("최초입력", "").replace('.', '-').replace('/', '-').replace('승인', '').strip()
+            scrawl_info['published_date'] = published_date.strip()
         except Exception as e:
             print("published_date error : ", response.url, e)
             scrawl_info['published_date'] = published_date
