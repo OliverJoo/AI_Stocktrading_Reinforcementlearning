@@ -1,0 +1,6 @@
+[submodule "Prep/eKoNLPy"]
+	path = Prep/eKoNLPy
+	url = https://github.com/entelecheia/eKoNLPy.git
+[submodule "Prep/textrank"]
+	path = Prep/textrank
+	url = https://github.com/lovit/textrank.git
