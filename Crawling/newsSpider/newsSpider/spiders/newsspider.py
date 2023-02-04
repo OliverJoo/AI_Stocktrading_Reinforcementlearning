@@ -1,5 +1,5 @@
-# execute crawling : scrapy crawl newsspider 또는 main.py 파일 실행
-# 로그파일을 만들려면 scrapy crawl newsspider > log.txt 같이 인자를 주면 됨. main.py 로는 로그파일 실행 불가
+# execute crawling : scrapy crawl newsspider or execute main.py
+# for log: scrapy crawl newsspider > temp_log.txt
 import scrapy
 import time
 import yaml
@@ -10,7 +10,7 @@ import sqlalchemy
 import pymysql
 import pandas as pd
 import random
-from newsSpider.items import NewsspiderItem  # 만약 NewsspiderItem 못찾을 경우 해당 설치된 곳에서 조절 해야함
+from newsSpider.items import NewsspiderItem
 
 pymysql.install_as_MySQLdb()
 
@@ -64,7 +64,7 @@ class NewsspiderSpider(scrapy.Spider):
             engine = sqlalchemy.create_engine(f'mysql://root:{DB_SECRET}@localhost:3306/sqldb', encoding='utf8')
             conn = engine.connect()
 
-            # 거래 가능 DB Pool 테이블에서 주식목록을 가져옴
+            # get stock lists from the tradable DB Pool
             sql = f'select market , ticker , stock_name  from tb_predicted_stock_pool tpsp where use_yn ="y"'
 
             filtered_stock_list = pd.read_sql(sql, engine)
@@ -73,7 +73,7 @@ class NewsspiderSpider(scrapy.Spider):
             start_num = 0
             # print("len_filtered_stock_list count : " , len_filtered_stock_list)
 
-            # 해당 금융시장의 종목별로 for 루프
+            # for loop by each stock
             for idx in range(start_num, len_filtered_stock_list):
                 print('ticker : ', filtered_stock_list.iloc[idx]['ticker'], 'Market : ',
                       filtered_stock_list.iloc[idx]['market'], 'Name : ', filtered_stock_list.iloc[idx]['stock_name'])
@@ -81,20 +81,20 @@ class NewsspiderSpider(scrapy.Spider):
                 ticker = filtered_stock_list.iloc[idx]['ticker']
                 stock_name = filtered_stock_list.iloc[idx]['stock_name']
 
-                # 언론사별로 for 루프
+                # for loop by news site
                 for press in press_lists:
 
-                    # 방식: 1일 이전부터 1일씩 거꾸로 돌면서 200일치를 크롤링
+                    # methodology: crawling from "today -1" to "today -1 -200"
                     date = datetime.date.today() - datetime.timedelta(days=1)
-                    target_date = date - datetime.timedelta(days=200)  # 크롤링 기간
-                    while target_date != date:  # 현재로부터 얼마나 과거의 날들을 크롤링할지
+                    target_date = date - datetime.timedelta(days=200)  # crawling term
+                    while target_date != date:
 
                         date_str = date.strftime('%Y%m%d')
 
                         url = f'{base_url}search.naver?where=news&query={stock_name}&mynews=1&news_office_checked={press}&nso=so:dd,p:from{date_str}to{date_str}'
                         response = requests.get(url)
 
-                        # 정상 응답 이지만 뉴스 기사가 없는 경우 다음 루프(day -1일)로 이동
+                        # no news return process
                         if response.status_code == 200:
                             html = response.text
                             soup = BeautifulSoup(html, 'html.parser')
@@ -102,9 +102,7 @@ class NewsspiderSpider(scrapy.Spider):
                                 date -= datetime.timedelta(days=1)
                                 continue
                         else:
-                            # 비정상적 응답인 경우 로그를 남기고 다음 루프로 이동
-                            # 403 에러의 경우 해당 url 을 접속해서 기사가 있는지 확인 필요
-                            # 만약 서버에서 거부하는 것이므로 스크래피를 정지한 뒤에 동시접속을 낮추거나 딜레이를 더 주어서 재실행해야함
+                            # to leave log(temp_log.txt) in the case of abnormal response
                             print("response.status_code : ", response.status_code, url)
                             print("ignore", response.status_code)
                             time.sleep(5)
@@ -114,7 +112,7 @@ class NewsspiderSpider(scrapy.Spider):
                         yield scrapy.Request(url=url, meta={'ticker': ticker, 'stock_name': stock_name},
                                              callback=self.parse_url, dont_filter=True)
 
-                        # 상단의 user_agent 랜덤사용을 위한 로직 (403 회피 방안)
+                        # random use the user_agent (to avoid 403 return)
                         # yield scrapy.Request(url=url, meta={'ticker': ticker, 'stock_name': stock_name},
                         #                      callback=self.parse_url, dont_filter=True, headers={
                         #         "User-Agent": user_agent_list[random.randint(0, len(user_agent_list) - 1)]})
@@ -126,16 +124,16 @@ class NewsspiderSpider(scrapy.Spider):
 
     def parse_url(self, response):
         try:
-            # 해당 주소의 href 를 가지고 다시 request 호출
+            # request the href link in the page that requested above
             for news_data in response.css('.list_news li .news_area .news_tit::attr(href)').getall():
                 url = news_data
-                # 전체 href 링크가 아래와 같을 경우 상세뉴스가 없거나 잘못된 주소를 받은것이므로 패스
+                # error link if total href link is the same with below
                 if "http://news.heraldcorp.com/" == url:
                     continue
                 print("link here: ", response.url, url)
                 yield scrapy.Request(url=url, callback=self.parse_news, meta=response.meta, dont_filter=True)
 
-                # 상단의 user_agent 랜덤사용을 위한 로직 (403 회피 방안)
+                # random use the user_agent (to avoid 403 return)
                 # yield scrapy.Request(url=url, callback=self.parse_news, meta=response.meta, dont_filter=True, headers={
                 #     "User-Agent": user_agent_list[random.randint(0, len(user_agent_list) - 1)]})
 
@@ -149,7 +147,7 @@ class NewsspiderSpider(scrapy.Spider):
         scrawl_info['stock_name'] = response.meta['stock_name'].strip()
         scrawl_info['ticker'] = response.meta['ticker']
 
-        # 매일경제 언론사만해도 다양한 카테고리가 있고 카테고리별 컨텐츠와 작성일이 상이하여 아래와 같이 처리
+        # each publisher using different naming rule
         content = ''.join(response.css('#articleText p::text').getall())
 
         if content == '':
