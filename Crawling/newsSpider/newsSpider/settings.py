@@ -21,7 +21,7 @@ LOG_LEVEL = 'INFO'
 # 보안잇슈로 referer속성 추가
 DEFAULT_REQUEST_HEADERS = {'Referer': 'https://search.naver.com/'}
 
-# Crawl responsibly by identifying yourself (and your website) on the user-agent
+# Crawling responsibly by identifying yourself (and your website) on the user-agent
 USER_AGENT = 'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)'
 
 # User-agent middleware

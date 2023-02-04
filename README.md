@@ -1,7 +1,7 @@
 # AI Stock Trading with Reinforcement Learning + MySQL 
 
  * Package structure
-   * ├── Crawl
+   * ├── Crawling
    * │ ├── FinancialStatement
    * │ ├── newsSpider
    * │ │ ├── newsSpider
@@ -18,7 +18,7 @@
 
  * Project Folder
    * Crawl: Crawling News, Twitter, Financial Statements
-   * Data: Store data
+   * Data: temporary data store for test 
    * MDL: Reinforcement MDLing & Sentiment Analysis
    * Prep: Preprocessing for Nature Language Processing
    * Strategy: Stock Filtering by Financial Statements
