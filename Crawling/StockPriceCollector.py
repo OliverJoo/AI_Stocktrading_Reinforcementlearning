@@ -9,10 +9,12 @@ import datetime
 pymysql.install_as_MySQLdb()
 
 # DB connection info
-with open(f'D:\99. Dev\Python\pythonProject\Final_Project\project_venv\Crawl\config.yaml', encoding='UTF-8') as f:
+with open(f'config.yaml', encoding='UTF-8') as f:
     _cfg = yaml.load(f, Loader=yaml.FullLoader)
 
 DB_SECRET = _cfg['DB_SECRET']
+VOLATILITY_TABLE = _cfg['TB_VOLATILITY']
+
 
 
 def insert_market_stock_ohlcvc(start_date, end_date):
@@ -108,7 +110,7 @@ def volatility_stock_list(volatility: int):
         engine = sqlalchemy.create_engine(f'mysql://root:{DB_SECRET}@localhost:3306/sqldb', encoding='utf8')
 
         # usage info update - previous volatility info
-        engine.execute('update tb_volatility_stock set use_yn = %s', 'n')
+        engine.execute(f'update {VOLATILITY_TABLE} set use_yn = %s', 'n')
 
         # over 240 trading days info only to remove trading halt list
         sql = f'select ticker, stock_name , avg((high-low)/low*100) as volatility from tb_stock_price  where DATE_FORMAT(date ,"%%Y-%%m-%%d") > "{date}" and ticker not in (select ticker from tb_stock_price where volume=0 and DATE_FORMAT(date ,"%%Y-%%m-%%d") > "{date}" group by ticker) group by ticker, stock_name having count(ticker) > 240'  # order by avg((high-low)/low*100) desc'
@@ -121,7 +123,7 @@ def volatility_stock_list(volatility: int):
         df_volatility_stocks['created_date'] = today
         df_volatility_stocks['use_yn'] = 'y'
 
-        df_volatility_stocks.to_sql(name='tb_volatility_stock', con=engine, if_exists='append', index=False)
+        df_volatility_stocks.to_sql(name=VOLATILITY_TABLE, con=engine, if_exists='append', index=False)
 
     except Exception as e:
         print(e)
@@ -186,10 +188,10 @@ def insert_filtered_ticfers_to_db_pool():
 
 
 # insert_filtered_ticfers_to_db_pool()
-# insert_market_stock_ohlcvc('2023-01-14', '2023-01-20')
+# insert_market_stock_ohlcvc('2023-02-02', '2023-02-06')
 
 # add input params(int)
-# volatility_stock_list(2)
+volatility_stock_list(2)
 
 # print(get_kospi_kosdaq_index('KOSPI', '2022-12-23', '2022-12-28'))
 # print(get_kospi_kosdaq_index('KOSDAQ', '2022-12-23', '2022-12-28'))
