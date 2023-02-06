@@ -191,7 +191,7 @@ def insert_filtered_ticfers_to_db_pool():
 # insert_market_stock_ohlcvc('2023-02-02', '2023-02-06')
 
 # add input params(int)
-volatility_stock_list(2)
+# volatility_stock_list(2)
 
 # print(get_kospi_kosdaq_index('KOSPI', '2022-12-23', '2022-12-28'))
 # print(get_kospi_kosdaq_index('KOSDAQ', '2022-12-23', '2022-12-28'))

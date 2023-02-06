@@ -148,5 +148,5 @@ def crawling_financial_statments(ticker: int):
     except Exception as e:
         print(f'DB insert exception({FS_DUMMY_TABLE}): ', e)
 
-
-crawling_financial_statments('214870')
+# test
+# crawling_financial_statments('214870')
