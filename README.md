@@ -18,7 +18,7 @@
 
  * Project Folder
    * Crawl: Crawling News, Twitter, Financial Statements
-   * Data: temporary data store for test 
+   * Data: Temporary file to manipulate date for test 
    * MDL: Reinforcement MDLing & Sentiment Analysis
    * Prep: Preprocessing for Nature Language Processing
-   * Strategy: Stock Filtering by Financial Statements
+   * Strategy: Stock Filtering or identifying outliers from Financial Statements
