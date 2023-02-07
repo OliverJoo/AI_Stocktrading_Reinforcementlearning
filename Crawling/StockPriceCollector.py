@@ -16,7 +16,6 @@ DB_SECRET = _cfg['DB_SECRET']
 VOLATILITY_TABLE = _cfg['TB_VOLATILITY']
 
 
-
 def insert_market_stock_ohlcvc(start_date, end_date):
     """
     stock price info(OHLCVC) insert to DB
@@ -33,9 +32,7 @@ def insert_market_stock_ohlcvc(start_date, end_date):
             len_df_stock_list_krx = len(df_stock_list_krx)
             print("df_stock_list_krx : ", df_stock_list_krx)
             for idx in range(0, len_df_stock_list_krx):
-                print('ticker : ', df_stock_list_krx.iloc[idx]['Code'], 'Market : ',
-                      df_stock_list_krx.iloc[idx]['Market'],
-                      'Name : ', df_stock_list_krx.iloc[idx]['Name'])
+                # print('ticker : ', df_stock_list_krx.iloc[idx]['Code'], 'Market : ', df_stock_list_krx.iloc[idx]['Market'], 'Name : ', df_stock_list_krx.iloc[idx]['Name'])
 
                 ticker = df_stock_list_krx.iloc[idx]['Code']
                 stock_name = df_stock_list_krx.iloc[idx]['Name']
@@ -159,7 +156,6 @@ def get_kospi_kosdaq_index(index_name: str, start_date: str, end_date: str) -> p
 def insert_filtered_ticfers_to_db_pool():
     try:
         engine = sqlalchemy.create_engine(f'mysql://root:{DB_SECRET}@localhost:3306/sqldb', encoding='utf8')
-        conn = engine.connect()
 
         setting_date = str(timeDelta.today.year - 1) + '/12'
         # filtered stock info insert to DB Pool
@@ -183,9 +179,6 @@ def insert_filtered_ticfers_to_db_pool():
         engine.execute(sql)
     except Exception as e:
         print(e)
-    finally:
-        conn.close()
-
 
 # insert_filtered_ticfers_to_db_pool()
 # insert_market_stock_ohlcvc('2023-02-02', '2023-02-06')
