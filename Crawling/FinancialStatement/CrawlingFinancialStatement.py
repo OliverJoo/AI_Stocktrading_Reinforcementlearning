@@ -8,10 +8,10 @@ import sqlalchemy
 
 pymysql.install_as_MySQLdb()
 
-# DB connection info
 with open(f'..\config.yaml', encoding='UTF-8') as f:
     _cfg = yaml.load(f, Loader=yaml.FullLoader)
 
+# DB info
 DB_SECRET = _cfg['DB_SECRET']
 FS_DUMMY_TABLE = _cfg['TB_FS_DUMMY']
 

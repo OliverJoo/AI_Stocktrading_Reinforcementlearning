@@ -6,10 +6,10 @@ import sqlalchemy
 import snscrape.modules.twitter as sntwitter
 from multiprocessing import Pool
 
-# DB connection info
 with open(f'..\config.yaml', encoding='UTF-8') as f:
     _cfg = yaml.load(f, Loader=yaml.FullLoader)
 
+# DB info
 DB_SECRET = _cfg['DB_SECRET']
 CONTENTS_TABLE = _cfg['TB_CONTENTS']
 TRADABLE_STOCK_LIST = _cfg['GET_TRADABLE_STOCK_LIST']

@@ -8,10 +8,17 @@
 from itemadapter import ItemAdapter
 from scrapy.exporters import CsvItemExporter
 import pymysql
+import yaml
 
 
 # from scrapy.utils.project import get_project_settings
 # settings = get_project_settings()
+
+with open(f'..\config.yaml', encoding='UTF-8') as f:
+    _cfg = yaml.load(f, Loader=yaml.FullLoader)
+
+# DB info
+DB_SECRET = _cfg['DB_SECRET']
 
 class NewsspiderPipeline:
 
@@ -20,7 +27,7 @@ class NewsspiderPipeline:
             host='localhost',
             db='sqldb',
             user='root',
-            passwd='0411',
+            passwd=DB_SECRET,
             charset='utf8',
             use_unicode=True
         )
