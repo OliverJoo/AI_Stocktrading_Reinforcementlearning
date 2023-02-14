@@ -14,7 +14,7 @@ import yaml
 # from scrapy.utils.project import get_project_settings
 # settings = get_project_settings()
 
-with open(f'..\config.yaml', encoding='UTF-8') as f:
+with open(f'..\..\config.yaml', encoding='UTF-8') as f:
     _cfg = yaml.load(f, Loader=yaml.FullLoader)
 
 # DB info

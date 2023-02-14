@@ -8,12 +8,12 @@ import sqlalchemy
 
 pymysql.install_as_MySQLdb()
 
-with open(f'..\config.yaml', encoding='UTF-8') as f:
+with open(f'..\..\config.yaml', encoding='UTF-8') as f:
     _cfg = yaml.load(f, Loader=yaml.FullLoader)
 
 # DB info
 DB_SECRET = _cfg['DB_SECRET']
-FS_DUMMY_TABLE = _cfg['TB_FS_DUMMY']
+FS_DUMMY_TABLE = _cfg['TB_FS_DUMMY']  # test db table
 
 def crawling_financial_statments(ticker: int):
     """
@@ -149,4 +149,4 @@ def crawling_financial_statments(ticker: int):
         print(f'DB insert exception({FS_DUMMY_TABLE}): ', e)
 
 # test
-# crawling_financial_statments('214870')
+crawling_financial_statments('214870')

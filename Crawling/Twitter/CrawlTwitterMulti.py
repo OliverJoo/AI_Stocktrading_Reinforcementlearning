@@ -6,7 +6,7 @@ import sqlalchemy
 import snscrape.modules.twitter as sntwitter
 from multiprocessing import Pool
 
-with open(f'..\config.yaml', encoding='UTF-8') as f:
+with open(f'..\..\config.yaml', encoding='UTF-8') as f:
     _cfg = yaml.load(f, Loader=yaml.FullLoader)
 
 # DB info

@@ -4,7 +4,7 @@ import sqlalchemy
 import yaml
 
 # DB connection
-with open('../config.yaml', encoding='UTF-8') as f:
+with open('..\config.yaml', encoding='UTF-8') as f:
     _cfg = yaml.load(f, Loader=yaml.FullLoader)
 
 DB_SECRET = _cfg['DB_SECRET']
