@@ -10,7 +10,7 @@ with open('../config.yaml', encoding='UTF-8') as f:
 DB_SECRET = _cfg['DB_SECRET']
 FS_INFO_FOR_OUTLIER = _cfg['GET_FS_INFO_FOR_OUTLIER']
 zscore_threshold = 2.0  # 2 standard deviation: to filter 2.5% of worse side
-
+# no_outlier_num = float('inf')
 
 def identifying_outliers():
     """
@@ -54,6 +54,5 @@ def identifying_outliers():
     # outlier_std.to_csv('2021OutlierStd.csv', index=False)
 
     return outlier_std
-
 
 # identifying_outliers()
